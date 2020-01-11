@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // shows the correct location and stops user from moving guess
     public void showResult() {
         mMap.addMarker(new MarkerOptions().position(new LatLng(locationCoords[currentLocationIndex][0], locationCoords[currentLocationIndex][1])));
+        distanceTxt.setVisibility(View.VISIBLE);
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // randomizes the location to guess
     public void randomizeLocation() {
         markerPlaced = false;
+        distanceTxt.setVisibility(View.INVISIBLE);
         int tempIndex = (int) (Math.random() * locationNames.size());
         String currentLocationName = locationNames.get(tempIndex);
         currentLocationIndex = getIndex(LOCATION_NAMES, currentLocationName);
@@ -145,8 +147,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 if (view.getId() == R.id.button && mapView.getVisibility() != View.INVISIBLE && markerPlaced) {
                     updateScore(getDistance(currentClickedPoint.latitude, currentClickedPoint.longitude, locationCoords[currentLocationIndex][0], locationCoords[currentLocationIndex][1]));
+                    showResult();
                     if (locationNames.size() > 0) {
-                        showResult();
                         btn.setText("Randomize");
                         btn.setOnClickListener(new View.OnClickListener() {
                             @Override
